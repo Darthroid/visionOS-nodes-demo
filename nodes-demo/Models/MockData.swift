@@ -10,7 +10,7 @@ import Foundation
 final class MockData {
     static let nodes: [Node] = [
         .init(
-            id: UUID().uuidString,
+            id: "0",
             name: "test node",
             description: "This is a test node",
             x: 0,
@@ -18,7 +18,7 @@ final class MockData {
             z: 0
         ),
         .init(
-            id: UUID().uuidString,
+            id: "1",
             name: "node one",
             description: "This is a test node one",
             x: -0.4201641,
@@ -26,7 +26,7 @@ final class MockData {
             z: -1.5
         ),
         .init(
-            id: UUID().uuidString,
+            id: "2",
             name: "node two",
             description: "This is a test node two",
             x: -0.058503926,
@@ -34,7 +34,7 @@ final class MockData {
             z: -1.5
         ),
         .init(
-            id: UUID().uuidString,
+            id: "3",
             name: "node three",
             description: "This is a test node three",
             x: -0.38982427,
@@ -42,12 +42,17 @@ final class MockData {
             z: -1.5
         ),
         .init(
-            id: UUID().uuidString,
+            id: "4",
             name: "very long center node",
             description: "This is a test node with very long description that is placed in the center",
             x: -0.26737112,
             y: 1.4024374,
             z: -1.5
         )
+    ]
+    
+    static let connections: [NodeConnection] = [
+        NodeConnection(id: "conn1", fromNodeId: "1", toNodeId: "2"),
+//        NodeConnection(id: "conn2", fromNodeId: "2", toNodeId: "3")
     ]
 }

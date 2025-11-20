@@ -20,6 +20,16 @@ struct Node: Identifiable, Equatable {
     var positionDescription: String { "(\(x), \(y), \(z))" }
 }
 
+struct NodeConnection: Identifiable, Equatable {
+    let id: String
+    let fromNodeId: String
+    let toNodeId: String
+}
+
 struct NodeDataComponent: Component {
     let node: Node
+}
+
+struct ConnectionDataComponent: Component {
+    let connection: NodeConnection
 }

@@ -13,10 +13,12 @@ import RealityKit
 @Observable
 final class AppModel: Sendable {
     var nodes: [Node] = []
+    var connections: [NodeConnection] = []
     var selectedNodeId: String?
     
     init() {
         self.nodes = MockData.nodes
+        self.connections = MockData.connections
     }
     
     func addNode(name: String, description: String, position: (x: Float, y: Float, z: Float)?) {
@@ -53,5 +55,45 @@ final class AppModel: Sendable {
     
     func removeNode(_ node: Node) {
         nodes.removeAll { $0.id == node.id }
+        connections.removeAll { $0.fromNodeId == node.id || $0.toNodeId == node.id }
     }
+    
+    func updatePosition(for nodeId: String, newPosition: SIMD3<Float>) {
+        if let index = nodes.firstIndex(where: { $0.id == nodeId }) {
+            let oldNode = nodes[index]
+            let updatedNode = Node(
+                id: oldNode.id,
+                name: oldNode.name,
+                description: oldNode.description,
+                x: newPosition.x,
+                y: newPosition.y,
+                z: newPosition.z
+            )
+            
+            nodes[index] = updatedNode
+        }
+    }
+    
+    func addConnection(from fromNodeId: String, to toNodeId: String) {
+        guard fromNodeId != toNodeId,
+              nodes.contains(where: { $0.id == fromNodeId }),
+              nodes.contains(where: { $0.id == toNodeId }) else { return }
+        
+        guard !connections.contains(where: {
+            ($0.fromNodeId == fromNodeId && $0.toNodeId == toNodeId) ||
+            ($0.fromNodeId == toNodeId && $0.toNodeId == fromNodeId)
+        }) else { return }
+        
+        let connection = NodeConnection(
+            id: UUID().uuidString,
+            fromNodeId: fromNodeId,
+            toNodeId: toNodeId
+        )
+        connections.append(connection)
+    }
+    
+    func removeConnection(_ connection: NodeConnection) {
+        connections.removeAll { $0.id == connection.id }
+    }
+    
 }
