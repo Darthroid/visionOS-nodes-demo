@@ -8,7 +8,8 @@ import Foundation
 import RealityKit
 import RealityKitContent
 
-struct Node {
+struct Node: Identifiable {
+    let id: String
     let name: String
     let description: String
     let x: Float

@@ -14,12 +14,17 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     
     var body: some View {
-        Text("Use gestures to move nodes")
-            .onAppear {
-                Task {
-                    await openImmersiveSpace(id: "NodeMapView")
-                }
+        Text("""
+            Use gestures to move nodes
+            Click on the node to show detail information
+            """
+        )
+        .multilineTextAlignment(.center)
+        .onAppear {
+            Task {
+                await openImmersiveSpace(id: "NodeMapView")
             }
+        }
     }
 }
 

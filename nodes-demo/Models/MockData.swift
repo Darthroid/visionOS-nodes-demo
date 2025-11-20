@@ -5,9 +5,12 @@
 //  Created by Олег Комаристый on 18.11.2025.
 //
 
+import Foundation
+
 final class MockData {
     static let nodes: [Node] = [
         .init(
+            id: UUID().uuidString,
             name: "test node",
             description: "This is a test node",
             x: 0,
@@ -15,29 +18,33 @@ final class MockData {
             z: 0
         ),
         .init(
+            id: UUID().uuidString,
             name: "node one",
-            description: "This is a test node",
+            description: "This is a test node one",
             x: -0.4201641,
             y: 1.5058086,
             z: -1.5
         ),
         .init(
+            id: UUID().uuidString,
             name: "node two",
-            description: "This is a test node",
+            description: "This is a test node two",
             x: -0.058503926,
             y: 1.4341328,
             z: -1.5
         ),
         .init(
+            id: UUID().uuidString,
             name: "node three",
-            description: "This is a test node",
+            description: "This is a test node three",
             x: -0.38982427,
             y: 1.3047304,
             z: -1.5
         ),
         .init(
+            id: UUID().uuidString,
             name: "very long center node",
-            description: "This is a test node",
+            description: "This is a test node with very long description that is placed in the center",
             x: -0.26737112,
             y: 1.4024374,
             z: -1.5
