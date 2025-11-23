@@ -12,7 +12,7 @@ struct CreateNodeView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var name: String = ""
-    @State var description: String = ""
+    @State var detail: String = ""
     
     var body: some View {
         NavigationStack {
@@ -22,17 +22,17 @@ struct CreateNodeView: View {
                         Text("Name")
                     }
                     
-                    TextField(text: $description) {
+                    TextField(text: $detail) {
                         Text("Description")
                     }
                 }
                 
                 HStack {
                     Button("Create") {
-                        appModel.addNode(name: name, description: description, position: nil)
+                        appModel.addNode(name: name, detail: detail, position: nil)
                         dismiss()
                     }
-                    .disabled(name.isEmpty && description.isEmpty)
+                    .disabled(name.isEmpty && detail.isEmpty)
                     
                     Button("Cancel") {
                         dismiss()

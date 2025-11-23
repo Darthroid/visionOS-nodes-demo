@@ -12,7 +12,7 @@ final class MockData {
         .init(
             id: "0",
             name: "test node",
-            description: "This is a test node",
+            detail: "This is a test node",
             x: 0,
             y: 0,
             z: 0
@@ -20,7 +20,7 @@ final class MockData {
         .init(
             id: "1",
             name: "node one",
-            description: "This is a test node one",
+            detail: "This is a test node one",
             x: -0.4201641,
             y: 1.5058086,
             z: -1.5
@@ -28,7 +28,7 @@ final class MockData {
         .init(
             id: "2",
             name: "node two",
-            description: "This is a test node two",
+            detail: "This is a test node two",
             x: -0.058503926,
             y: 1.4341328,
             z: -1.5
@@ -36,7 +36,7 @@ final class MockData {
         .init(
             id: "3",
             name: "node three",
-            description: "This is a test node three",
+            detail: "This is a test node three",
             x: -0.38982427,
             y: 1.3047304,
             z: -1.5
@@ -44,7 +44,7 @@ final class MockData {
         .init(
             id: "4",
             name: "very long center node",
-            description: "This is a test node with very long description that is placed in the center",
+            detail: "This is a test node with very long description that is placed in the center",
             x: -0.26737112,
             y: 1.4024374,
             z: -1.5

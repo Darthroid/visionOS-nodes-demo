@@ -8,10 +8,18 @@
 import SwiftUI
 import Observation
 import RealityKit
+import SwiftData
 
 @MainActor
 @Observable
 final class AppModel: Sendable {
+    var container: ModelContainer?
+    
+    var context: ModelContext? {
+        container?.mainContext
+    }
+    
+    
     var nodes: [Node] = []
     var connections: [NodeConnection] = []
     var selectedNodeId: String?
@@ -19,13 +27,21 @@ final class AppModel: Sendable {
     init() {
         self.nodes = MockData.nodes
         self.connections = MockData.connections
+        
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: false, allowsSave: true)
+        self.container = try? ModelContainer(
+            for: NodeConnection.self, Node.self,
+            configurations: configuration
+        )
+        
+        fetchItems()
     }
     
     func node(forId id: String) -> Node? {
         return nodes.first(where: { $0.id == id })
     }
     
-    func addNode(name: String, description: String, position: (x: Float, y: Float, z: Float)?) {
+    func addNode(name: String, detail: String, position: (x: Float, y: Float, z: Float)?) {
         let _position: (x: Float, y: Float, z: Float)
             
             if let providedPosition = position {
@@ -49,33 +65,35 @@ final class AppModel: Sendable {
         let node = Node(
             id: UUID().uuidString,
             name: name,
-            description: description,
+            detail: detail,
             x: _position.x,
             y: _position.y,
             z: _position.z
         )
-        nodes.append(node)
+        
+        context?.insert(node)
+        try? context?.save()
+        fetchItems()
     }
     
     func removeNode(_ node: Node) {
-        nodes.removeAll { $0.id == node.id }
-        connections.removeAll { $0.fromNodeId == node.id || $0.toNodeId == node.id }
+        let nodeId = node.id
+        context?.delete(node)
+        try? context?.delete(model: NodeConnection.self, where: #Predicate<NodeConnection> { item in
+            item.fromNodeId == nodeId || item.toNodeId == nodeId
+        })
+        try? context?.save()
+        fetchItems()
     }
     
     func updatePosition(for nodeId: String, newPosition: SIMD3<Float>) {
-        if let index = nodes.firstIndex(where: { $0.id == nodeId }) {
-            let oldNode = nodes[index]
-            let updatedNode = Node(
-                id: oldNode.id,
-                name: oldNode.name,
-                description: oldNode.description,
-                x: newPosition.x,
-                y: newPosition.y,
-                z: newPosition.z
-            )
-            
-            nodes[index] = updatedNode
+        if let objectToUpdate = try? context?.fetch(FetchDescriptor<Node>(predicate: #Predicate { $0.id == nodeId })).first {
+            objectToUpdate.x = newPosition.x
+            objectToUpdate.y = newPosition.y
+            objectToUpdate.z = newPosition.z
         }
+        try? context?.save()
+        fetchItems()
     }
     
     func addConnection(from fromNodeId: String, to toNodeId: String) {
@@ -93,11 +111,25 @@ final class AppModel: Sendable {
             fromNodeId: fromNodeId,
             toNodeId: toNodeId
         )
-        connections.append(connection)
+        context?.insert(connection)
+        try? context?.save()
+        fetchItems()
     }
     
     func removeConnection(_ connection: NodeConnection) {
-        connections.removeAll { $0.id == connection.id }
+        context?.delete(connection)
+        try? context?.save()
+        fetchItems()
     }
     
+    func fetchItems() {
+        do {
+            let nodeDescriptor = FetchDescriptor<Node>(sortBy: [SortDescriptor(\.name)])
+            let connectionsDescriptor = FetchDescriptor<NodeConnection>(sortBy: [SortDescriptor(\.id)])
+            nodes = try context?.fetch(nodeDescriptor) ?? []
+            connections = try context?.fetch(connectionsDescriptor) ?? []
+        } catch {
+            print("Failed to fetch items: \(error)")
+        }
+    }
 }

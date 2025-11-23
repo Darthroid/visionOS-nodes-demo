@@ -13,7 +13,7 @@ struct NodeDetailView: View {
     
     var body: some View {
         VStack {
-            Text(node.description)
+            Text(node.detail)
             HStack {
                 Text("Position:")
                     .fontWeight(.semibold)
@@ -27,5 +27,5 @@ struct NodeDetailView: View {
 }
 
 #Preview {
-    NodeDetailView(node: .init(id: UUID().uuidString, name: "Test", description: "Description", x: 0, y: 0, z: 0))
+    NodeDetailView(node: .init(id: UUID().uuidString, name: "Test", detail: "Description", x: 0, y: 0, z: 0))
 }

@@ -20,15 +20,22 @@ struct ContentView: View {
     var body: some View {
         
         NavigationStack {
-            List(appModel.nodes, selection: $selectedNodeId) { node in
-                NavigationLink {
-                    NodeDetailView(node: node)
-                } label: {
-                    VStack(alignment: .leading) {
-                        Text(node.name)
-                            .font(.headline)
-                        Text(node.positionDescription)
-                            .font(.footnote)
+            ZStack {
+                if appModel.nodes.isEmpty {
+                    Text("Press + to add a new node")
+                        .foregroundStyle(.secondary)
+                } else {
+                    List(appModel.nodes, selection: $selectedNodeId) { node in
+                        NavigationLink {
+                            NodeDetailView(node: node)
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text(node.name)
+                                    .font(.headline)
+                                Text(node.positionDescription)
+                                    .font(.footnote)
+                            }
+                        }
                     }
                 }
             }

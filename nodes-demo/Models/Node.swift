@@ -7,23 +7,41 @@
 import Foundation
 import RealityKit
 import RealityKitContent
+import SwiftData
 
-struct Node: Identifiable, Equatable {
-    let id: String
-    let name: String
-    let description: String
-    let x: Float
-    let y: Float
-    let z: Float
+@Model
+class Node: Identifiable, Equatable {
+    @Attribute(.unique) var id: String
+    var name: String
+    var detail: String
+    var x: Float
+    var y: Float
+    var z: Float
     
     var position: SIMD3<Float> { .init(x, y, z) }
     var positionDescription: String { "(\(x), \(y), \(z))" }
+    
+    init(id: String, name: String, detail: String, x: Float, y: Float, z: Float) {
+        self.id = id
+        self.name = name
+        self.detail = detail
+        self.x = x
+        self.y = y
+        self.z = z
+    }
 }
 
-struct NodeConnection: Identifiable, Equatable {
-    let id: String
-    let fromNodeId: String
-    let toNodeId: String
+@Model
+class NodeConnection: Identifiable, Equatable {
+    @Attribute(.unique) var id: String
+    var fromNodeId: String
+    var toNodeId: String
+    
+    init(id: String, fromNodeId: String, toNodeId: String) {
+        self.id = id
+        self.fromNodeId = fromNodeId
+        self.toNodeId = toNodeId
+    }
 }
 
 struct NodeDataComponent: Component {

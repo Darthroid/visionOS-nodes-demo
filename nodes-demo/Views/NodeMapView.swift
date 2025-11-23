@@ -8,6 +8,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import SwiftData
 
 struct NodeMapView: View {
     @Environment(AppModel.self) var appModel
@@ -242,8 +243,8 @@ struct NodeMapView: View {
         
         let capsule = createCapsule(width: capsuleWidth, height: capsuleHeight, for: node, isSelected: isSelected)
 
-        let textContent = isSelected && !node.description.isEmpty ?
-            "\(node.name)\n\(node.description)" :
+        let textContent = isSelected && !node.detail.isEmpty ?
+            "\(node.name)\n\(node.detail)" :
             node.name
         
         let text = createTextLabel(
@@ -285,14 +286,14 @@ struct NodeMapView: View {
         let expandedHeight: Float = 0.06
         let padding: Float = 0.06
         
-        let textToMeasure = isSelected && !node.description.isEmpty ?
-            "\(node.name)\n\(node.description)" :
+        let textToMeasure = isSelected && !node.detail.isEmpty ?
+            "\(node.name)\n\(node.detail)" :
             node.name
         
         let textLength = Float(textToMeasure.count)
         let calculatedWidth = textLength * staticFontSize * 0.3 + padding
         
-        let height = (isSelected && !node.description.isEmpty) ? expandedHeight : baseHeight
+        let height = (isSelected && !node.detail.isEmpty) ? expandedHeight : baseHeight
         
         return (max(calculatedWidth, minWidth), height)
     }
@@ -371,8 +372,8 @@ struct NodeMapView: View {
         // Create new capsule and text
         let capsule = createCapsule(width: capsuleWidth, height: capsuleHeight, for: node, isSelected: isSelected)
         
-        let textContent = isSelected && !node.description.isEmpty ?
-            "\(node.name)\n\(node.description)" :
+        let textContent = isSelected && !node.detail.isEmpty ?
+            "\(node.name)\n\(node.detail)" :
             node.name
         
         let text = createTextLabel(
