@@ -244,7 +244,7 @@ struct ImmersiveNodeMapView: View {
         let capsule = createCapsule(width: capsuleWidth, height: capsuleHeight, for: node, isSelected: isSelected)
 
         let textContent = isSelected && !node.detail.isEmpty ?
-            "\(node.name)\n\(node.detail)" :
+            "\(node.name)\n \n\(node.detail)" :
             node.name
         
         let text = createTextLabel(
@@ -283,35 +283,48 @@ struct ImmersiveNodeMapView: View {
     
     private func calculateDynamicSize(for node: Node, isSelected: Bool) -> (width: Float, height: Float) {
         let staticFontSize: Float = isSelected ? Constant.fontSize * 0.8 : Constant.fontSize
-
-        // For unselected nodes: keep original behavior
+        
         if !isSelected {
-            let minWidth: CGFloat = 0.1
+            let maxWidth: Float = 0.4
+            let minWidth: Float = 0.06
             let baseHeight: Float = 0.04
-            let padding: Float = 0.03
-
+            let padding: Float = 0.02
+            
             let textToMeasure = node.name
-            let font: MeshResource.Font = .boldSystemFont(ofSize: CGFloat(staticFontSize))
-
-            let size = (textToMeasure as NSString)
-                .components(separatedBy: "\n")
-                .filter { !$0.isEmpty }
-                .map { $0.size(withAttributes: [.font: font]) }
-
-            let width = Float(size.map { $0.width }.max() ?? minWidth)
-            let height = Float(size.map({ $0.height }).reduce(0, +))
-
-            let calculatedWidth = width + padding
-            let calculatedHeight = height
-
-            return (max(calculatedWidth, Float(minWidth)), max(calculatedHeight, baseHeight))
+            
+            let attributedString = NSAttributedString(
+                string: textToMeasure,
+                attributes: [.font: UIFont.boldSystemFont(ofSize: CGFloat(staticFontSize))]
+            )
+            
+            let textContainer = CGRect(
+                x: 0,
+                y: 0,
+                width: CGFloat(maxWidth - padding * 2),
+                height: .greatestFiniteMagnitude
+            )
+            
+            let boundingRect = attributedString.boundingRect(
+                with: textContainer.size,
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                context: nil
+            )
+            
+            let requiredWidth = Float(boundingRect.width) + padding * 2
+            let finalWidth = min(max(requiredWidth, minWidth), maxWidth)
+            let calculatedHeight = Float(boundingRect.height) + padding * 2
+            
+            return (
+                finalWidth,
+                max(calculatedHeight, baseHeight)
+            )
         }
-
-        // For selected nodes: use fixed-width logic
+        
+        // For selected nodes: use your existing fixed-width logic
         let maxWidth: Float = 0.5 // Maximum width for capsules with long text
         let minWidth: Float = 0.06 // Minimum width for very short text
         let expandedHeight: Float = 0.06
-        let padding: Float = 0.03
+        let padding: Float = 0.02
 
         let textToMeasure = !node.detail.isEmpty ?
         "\(node.name)\n \n\(node.detail)" :
@@ -429,7 +442,7 @@ struct ImmersiveNodeMapView: View {
         let capsule = createCapsule(width: capsuleWidth, height: capsuleHeight, for: node, isSelected: isSelected)
         
         let textContent = isSelected && !node.detail.isEmpty ?
-            "\(node.name)\n\(node.detail)" :
+            "\(node.name)\n \n\(node.detail)" :
             node.name
         
         let text = createTextLabel(

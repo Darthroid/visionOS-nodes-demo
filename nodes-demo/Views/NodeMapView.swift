@@ -123,7 +123,7 @@ struct NodeView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .background(
-            Capsule()
+            RoundedRectangle(cornerRadius: 25)
                 .fill(Color(uiColor: .lightGray))
                 .shadow(
                     color: .black.opacity(0.3),
@@ -131,6 +131,7 @@ struct NodeView: View {
                     x: 0, y: 3
                 )
         )
+        .frame(maxWidth: 400)
         .transition(.scale.combined(with: .opacity))
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         .sheet(isPresented: $showDetail) {
