@@ -24,7 +24,12 @@ struct NodeDetailView: View {
             Text("Description:")
                 .font(.title)
                 .padding(.bottom)
-            Text(node.detail)
+            if node.detail.isEmpty {
+                Text("No description")
+                    .foregroundColor(Color(uiColor: .secondaryLabel))
+            } else {
+                Text(node.detail)
+            }
             
             Text("Position:")
                 .font(.title)
