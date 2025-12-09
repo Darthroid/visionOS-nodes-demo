@@ -17,15 +17,21 @@ struct CreateNodeView: View {
     var body: some View {
         NavigationStack {
             VStack{
-                Form {
-                    TextField(text: $name) {
+//                Form {
+                    TextField(text: $name, axis: .vertical) {
                         Text("Name")
                     }
-                    
-                    TextField(text: $detail) {
+                    .lineLimit(2...3)
+                    .textFieldStyle(.roundedBorder)
+                        
+                    TextField(text: $detail, axis: .vertical) {
                         Text("Description")
                     }
-                }
+                    .lineLimit(5...10)
+                    .textFieldStyle(.roundedBorder)
+//                }
+                
+                Spacer()
                 
                 HStack {
                     Spacer()

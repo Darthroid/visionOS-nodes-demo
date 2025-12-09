@@ -19,15 +19,21 @@ struct EditNodeView: View {
     var body: some View {
         NavigationStack {
             VStack{
-                Form {
-                    TextField(text: $name) {
+//                Form {
+                    TextField(text: $name, axis: .vertical) {
                         Text("Name")
                     }
+                    .lineLimit(2...3)
+                    .textFieldStyle(.roundedBorder)
                     
-                    TextField(text: $detail) {
+                    TextField(text: $detail, axis: .vertical) {
                         Text("Description")
                     }
-                }
+                    .lineLimit(5...10)
+                    .textFieldStyle(.roundedBorder)
+//                }
+                
+                Spacer()
                 
                 HStack {
                     Spacer()
