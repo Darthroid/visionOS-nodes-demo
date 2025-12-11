@@ -50,6 +50,7 @@ A visionOS demo application showcasing mind mapping in both 2D and immersive XR 
 
 ### Potential areas for expansion:
 
+- Multiple canvas support
 - Collaborative multi-user XR sessions
 - AI-powered node suggestions and auto-organization
 - Additional export formats and integrations
