@@ -21,49 +21,51 @@ struct NodeDetailView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Description:")
-                .font(.title)
-                .padding(.bottom)
-            if node.detail.isEmpty {
-                Text("No description")
-                    .foregroundColor(Color(uiColor: .secondaryLabel))
-            } else {
-                ScrollView {
-                    Text(node.detail)
-                }
-            }
-            
-            Text("Position:")
-                .font(.title)
-                .padding(.vertical)
-            Text(node.positionDescriptionMeters)
-            
-            if appModel.hasConnection(nodeId: node.id) {
-                Text("Connected Nodes")
-                    .font(.title)
-                    .padding(.vertical)
-                List(appModel.nodesConnectedWith(node: node)) { connectedNode in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(connectedNode.name)
-                                .font(.headline)
-                            Text(connectedNode.positionDescription)
-                                .font(.footnote)
+            ScrollView {
+                VStack(alignment: .leading) {
+                    Text("Description:")
+                        .font(.title)
+                        .padding(.bottom)
+                    if node.detail.isEmpty {
+                        Text("No description")
+                            .foregroundColor(Color(uiColor: .secondaryLabel))
+                    } else {
+                        Text(node.detail)
+                    }
+                    
+                    Text("Position:")
+                        .font(.title)
+                        .padding(.vertical)
+                    Text(node.positionDescriptionMeters)
+                    
+                    if appModel.hasConnection(nodeId: node.id) {
+                        Text("Connected Nodes")
+                            .font(.title)
+                            .padding(.vertical)
+                        ForEach(appModel.nodesConnectedWith(node: node)) { connectedNode in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(connectedNode.name)
+                                        .font(.headline)
+                                    Text(connectedNode.positionDescription)
+                                        .font(.footnote)
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    appModel.removeConnectionsBetween(connectedNode, and: node)
+                                } label: {
+                                    Image(systemName: "xmark")
+                                }
+                                .buttonStyle(.borderless)
+                            }
                         }
-                        
-                        Spacer()
-                        
-                        Button {
-                            appModel.removeConnectionsBetween(connectedNode, and: node)
-                        } label: {
-                            Image(systemName: "xmark")
-                        }
+                        .listStyle(.plain)
                     }
                 }
-                .listStyle(.plain)
             }
-            
-            Spacer()
+//            Spacer()
             
             HStack {
                 Spacer()
@@ -115,7 +117,7 @@ struct NodeDetailView: View {
                 } label: {
                     Text("Cancel")
                 }
-
+                
             },
             message: {
                 Text("Are you sure you want to delete this node?")
