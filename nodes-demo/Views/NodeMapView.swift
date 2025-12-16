@@ -117,7 +117,7 @@ struct NodeView: View {
                     showDetail.toggle()
                 } label: {
                     Image(systemName: "info.circle")
-                        .foregroundStyle(Color.white)
+                        .foregroundColor(.init(uiColor: .darkGray))
                 }
             }
         }
